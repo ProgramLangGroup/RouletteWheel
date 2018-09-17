@@ -17,4 +17,4 @@ end
 t = Wheel.new(25)
 puts t.func2 # 77.0
 t.func = 60 # invokes f=()
-puts t.number # 15.55
+puts t.number # 15.555555555555557
