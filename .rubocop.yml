@@ -1,0 +1,4 @@
+Style/EndOfLine:
+  EnforcedStyle: lf
+Documentation:
+  Enabled: false
