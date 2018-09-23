@@ -21,24 +21,32 @@ class Wheel
   end
 
   def betting
-    if @bank > 0
+    if @bank > 0 and @bank < @payout
       spin
       if @color == @slot[0,1].upcase
         @bank = @bank + (@bet * 2)
-        puts 'You landed on ' + @slot
-        puts 'You won the bet! Your bank is now at $' + @bank.to_s
-        Prompt.prompts(@bank)
+        puts 'You landed on ' + @slot + '.'
+        puts 'You won the bet! Your bank is now at $' + @bank.to_s + '.'
+
+        if @bank >= @payout
+          puts 'You have reached your desire payout. The game is now over. Congratulations!'
+          exit(1)
+        else
+          Prompt.prompts(@bank)
+        end
+
       else
         @bank -= @bet
-        puts 'You landed on ' + @slot
-        puts 'You lost the bet. Your bank is now at $' + @bank.to_s
-        Prompt.prompts(@bank)
-      end
+        puts 'You landed on ' + @slot + '.'
+        puts 'You lost the bet. Your bank is now at $' + @bank.to_s + '.'
 
-    elsif @bank >= @payout
-      puts 'You have reached your desire payout. The game is now over. Congratulations!'
-    else
-      'Sorry, you have nothing left in the bank. The game is now over.'
+        if @bank > 0
+          Prompt.prompts(@bank)
+        else
+          puts 'Sorry, you have nothing left in the bank. The game is now over.'
+          exit(1)
+        end
+      end
     end
   end
 
@@ -96,4 +104,3 @@ class Prompt
   @payout = gets.chomp.to_i
   prompts(@bank)
 end
-
