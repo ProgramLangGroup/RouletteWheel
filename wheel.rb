@@ -21,10 +21,11 @@ class Wheel
   end
 
   def betting
+
     if @bank > 0 and @bank < @payout
       spin
       if @color == @slot[0,1].upcase
-        @bank = @bank + (@bet * 2)
+        @bank = @bank + (@bet)
         puts 'You landed on ' + @slot + '.'
         puts 'You won the bet! Your bank is now at $' + @bank.to_s + '.'
 
@@ -39,19 +40,35 @@ class Wheel
         @bank -= @bet
         puts 'You landed on ' + @slot + '.'
         puts 'You lost the bet. Your bank is now at $' + @bank.to_s + '.'
-
-        if @bank > 0
-          Prompt.prompts(@bank)
-        else
+        if @bank<1
           puts 'Sorry, you have nothing left in the bank. The game is now over.'
           exit(1)
+        end
+        puts "Would you like to double up? (Y for yes N for no)"
+        @yes=gets.chomp.to_s
+
+        if @yes.eql? 'Y'
+        double_up
+        else
+          Prompt.prompts(@bank)
+
+        puts @yes
+        #if @bank > 0
+          #Prompt.prompts(@bank)
+        #else
+          #puts 'Sorry, you have nothing left in the bank. The game is now over.'
+          #exit(1)
         end
       end
     end
   end
 
   def double_up
-    @number = @number
+
+    @bet=@bet*2
+    betting
+    @yes="N"
+
   end
 
   def initialize(bank, bet, color, payout)
