@@ -11,8 +11,7 @@ class Wheel
         @spin == 00
       end
 
-      puts 'Sorry, you landed on green (slot ' + @spin.to_s + '). The game is now over.'
-      exit(1)
+      @slot = 'green'
 
     elsif ((@spin >= 1) and (@spin <= 10) or (@spin >= 19) and (@spin <= 28)) and (@spin.even?)
       @slot = 'black'
@@ -30,7 +29,13 @@ class Wheel
     if @bank > 0 and @bank < @payout
       spin
       if @color == @slot[0,1].upcase
-        @bank += @bet
+
+        if @slot.eql? 'green'
+          @bank += (@bet * 35)
+        else
+          @bank += @bet
+        end
+
         puts 'You landed on ' + @slot + ' (slot ' + @spin.to_s + ').'
         puts 'You won the bet! Your bank is now at $' + @bank.to_s + '.'
 
@@ -47,7 +52,7 @@ class Wheel
         puts 'You lost the bet. Your bank is now at $' + @bank.to_s + '.'
 
         if @bank > 0
-          puts 'Would you like to double up?'
+          puts 'Would you like to double up? Type "Y" for yes and "N" for no.'
           response = gets.chomp.upcase.to_s
 
           if response.eql? 'Y'
@@ -108,14 +113,14 @@ class Prompt
 
   # function receives color
   def self.pick_color
-    puts 'Pick a color: Type "R" for red or "B" for black.'
+    puts 'Pick a color: Type "R" for red, "B" for black, or "G" for green.'
     @color = gets.chomp.upcase.to_s
     check_color
   end
 
   # function ensures valid color input
   def self.check_color
-    unless @color.eql? 'R' or @color.eql? 'B'
+    unless @color.eql? 'R' or @color.eql? 'B' or @color.eql? 'G'
       puts @color + ' is not a valid input.'
       pick_color
     end
