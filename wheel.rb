@@ -3,12 +3,14 @@ class Wheel
 
   # function generates random number and determines if it is red, black, or green
   def spin
+
+    # generates random number equal to or between 0 and 37
     @spin = rand(37)
 
     if @spin == 0 or @spin == 37
 
       if @spin == 37
-        @spin == 00
+        @spin = '00'
       end
 
       @slot = 'green'
@@ -28,8 +30,11 @@ class Wheel
   def betting
     if @bank > 0 and @bank < @payout
       spin
+
+      # checks if color chosen by user matches spin color
       if @color == @slot[0,1].upcase
 
+        # if green multiply bet by 35 else simply add bet
         if @slot.eql? 'green'
           @bank += (@bet * 35)
         else
@@ -39,6 +44,7 @@ class Wheel
         puts 'You landed on ' + @slot + ' (slot ' + @spin.to_s + ').'
         puts 'You won the bet! Your bank is now at $' + @bank.to_s + '.'
 
+        # if desired payout reached exit game else rerun prompt
         if @bank >= @payout
           puts 'You have reached/exceeded your desired payout. The game is now over. Congratulations!'
           exit(1)
@@ -46,6 +52,7 @@ class Wheel
           Prompt.prompts(@bank)
         end
 
+      # if color chosen by user does not match spin, subtract bet from bank and prompt user to double up
       else
         @bank -= @bet
         puts 'You landed on ' + @slot + ' (slot ' + @spin.to_s + ').'
@@ -75,6 +82,7 @@ class Wheel
   # function takes previous bet and doubles it
   def double_up
 
+    # checks that there is enough in the bank to double up
     if (@bet * 2) < @bank
       @bet *= 2
       betting
@@ -103,7 +111,7 @@ class Prompt
     check_bet
   end
 
-  # Function ensures bet does not exceed bank
+  # function ensures bet does not exceed bank
   def self.check_bet
     if @bet > @bank
       puts 'You cannot bet more than you have in the bank.'
